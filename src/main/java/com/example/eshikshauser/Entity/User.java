@@ -2,7 +2,6 @@ package com.example.eshikshauser.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.Column;
