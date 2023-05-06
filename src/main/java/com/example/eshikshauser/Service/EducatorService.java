@@ -1,8 +1,6 @@
 package com.example.eshikshauser.Service;
 
 import com.example.eshikshauser.dto.EducatorDataDto;
-import com.example.eshikshauser.dto.UserDataDto;
-import com.example.eshikshauser.dto.UserDataResponseDto;
 import com.example.eshikshauser.dto.UserIdDto;
 
 public interface EducatorService {

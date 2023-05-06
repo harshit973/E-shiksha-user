@@ -2,19 +2,15 @@ package com.example.eshikshauser.Service.impl;
 
 import com.example.eshikshauser.Entity.Educator;
 import com.example.eshikshauser.Entity.User;
-import com.example.eshikshauser.Exception.RecordAlreadyExistsException;
 import com.example.eshikshauser.Exception.RecordNotExistsException;
 import com.example.eshikshauser.Repository.EducatorRepository;
 import com.example.eshikshauser.Repository.UserRepository;
 import com.example.eshikshauser.Service.EducatorService;
-import com.example.eshikshauser.Service.UserService;
 import com.example.eshikshauser.dto.EducatorDataDto;
-import com.example.eshikshauser.dto.UserDataDto;
 import com.example.eshikshauser.dto.UserDataResponseDto;
 import com.example.eshikshauser.dto.UserIdDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
