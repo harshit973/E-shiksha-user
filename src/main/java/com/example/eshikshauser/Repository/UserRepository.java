@@ -15,5 +15,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = EntityConstants.updateUser)
-    void updateUser(String name, String email, Integer gender,String password);
+    void updateUser(Long id, String name, String email, Integer gender, String password);
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = EntityConstants.deleteUser)
+    void deleteUser(Long id);
+
 }
