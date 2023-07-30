@@ -8,7 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EducatorDataDto {
-    public Long id;
-    public UserDataResponseDto user;
-    public Integer rating;
+
+    private Long id;
+
+    private UserDataResponseDto user;
+
+    private Integer experience;
+
+    private Integer rating;
+
 }

@@ -1,9 +1,8 @@
 package com.example.eshikshauser.Entity;
 
-import javax.persistence.*;
-
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
@@ -12,28 +11,28 @@ public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long id;
+    protected Long id;
 
     @Column
-    private Boolean deleted;
+    protected Boolean deleted;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_date")
-    private Date createdAt;
+    protected Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_date")
-    private Date updatedAt;
+    protected Date updatedAt;
 
     @PrePersist
-    public void onCreate() {
+    protected void onCreate() {
         this.setCreatedAt(new Date());
         this.setUpdatedAt(new Date());
         this.setDeleted(false);
     }
 
     @PreUpdate
-    public void onUpdate() {
+    protected void onUpdate() {
         this.setUpdatedAt(new Date());
     }
 

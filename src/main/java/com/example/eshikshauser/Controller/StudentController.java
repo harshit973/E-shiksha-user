@@ -16,9 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = ApiConstants.version1 + ApiConstants.seperator + ApiConstants.user, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = ApiConstants.version1 + ApiConstants.separator + ApiConstants.user, produces = MediaType.APPLICATION_JSON_VALUE)
 @Log4j2
-public class UserController {
+public class StudentController {
     @Autowired
     UserService userService;
 
@@ -32,7 +32,7 @@ public class UserController {
         }
     }
 
-    @PostMapping(ApiConstants.seperator + "authenticate")
+    @PostMapping(ApiConstants.separator + "authenticate")
     public ResponseEntity<?> authenticate(@NonNull @RequestBody final UserDataDto requestUser) {
         try {
             return new ResponseEntity<>(this.userService.createUser(requestUser), HttpStatus.CREATED);
@@ -42,12 +42,12 @@ public class UserController {
         }
     }
 
-    @PutMapping(ApiConstants.seperator + "{id}")
+    @PutMapping(ApiConstants.separator + "{id}")
     public ResponseEntity<UserDataDto> update(@NonNull @PathVariable("id") final Long id, @NonNull @RequestBody final UserDataDto requestUser) {
         return new ResponseEntity<>(this.userService.updateUser(id, requestUser), HttpStatus.OK);
     }
 
-    @GetMapping(ApiConstants.seperator + "id/{id}")
+    @GetMapping(ApiConstants.separator + "id/{id}")
     public ResponseEntity<?> get(@NonNull @PathVariable("id") final Long id) {
         try {
             return new ResponseEntity<>(this.userService.getUser(id), HttpStatus.OK);
@@ -57,7 +57,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(ApiConstants.seperator + "email/{email}")
+    @GetMapping(ApiConstants.separator + "email/{email}")
     public ResponseEntity<?> getByEmail(@NonNull @PathVariable("email") final String email) {
         try {
             return new ResponseEntity<>(this.userService.getUserByEmail(email), HttpStatus.OK);
@@ -67,7 +67,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(ApiConstants.seperator + "{id}")
+    @DeleteMapping(ApiConstants.separator + "{id}")
     public ResponseEntity<UserIdDto> delete(@NonNull @PathVariable("id") final Long id) {
         return new ResponseEntity<>(this.userService.deleteUser(id), HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package com.example.eshikshauser.Entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
@@ -13,14 +14,15 @@ import java.io.Serializable;
 @Table(name = "user_user")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @EqualsAndHashCode(callSuper = true)
 public class User extends BaseEntity implements Serializable {
     @Column(name = "name")
-    public String name;
-    @Column(name = "email")
-    public String email;
+    private String name;
+    @Column(name = "email",unique = true)
+    private String email;
     @Column(name = "gender")
-    public Integer gender;
+    private Integer gender;
     @Column(name = "password")
-    public String password;
+    private String password;
 }

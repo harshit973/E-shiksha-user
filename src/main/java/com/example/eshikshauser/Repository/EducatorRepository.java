@@ -15,11 +15,13 @@ public interface EducatorRepository extends JpaRepository<Educator, Long> {
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = EntityConstants.updateEducator)
-    void updateRating(Long id, Integer rating);
+    void updateRating(Long id, Integer rating,Integer experience);
+
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = EntityConstants.deleteEducator)
     void deleteEducator(Long id);
-    @Query(nativeQuery = true,value = EntityConstants.findEducatorByUserEmail)
+
+    @Query(nativeQuery = true, value = EntityConstants.findEducatorByUserEmail)
     List<Tuple> findEducatorByUserEmail(String email);
 }

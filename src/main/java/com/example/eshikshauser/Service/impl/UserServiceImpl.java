@@ -1,5 +1,6 @@
 package com.example.eshikshauser.Service.impl;
 
+import com.example.eshikshauser.Constants.ErrorMessages;
 import com.example.eshikshauser.Entity.User;
 import com.example.eshikshauser.Exception.RecordAlreadyExistsException;
 import com.example.eshikshauser.Exception.RecordNotExistsException;
@@ -27,31 +28,32 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDataResponseDto createUser(UserDataDto requestUser) {
+    public UserIdDto createUser(UserDataDto requestUser) {
         List<User> users = this.userRepo.findByEmail(requestUser.email);
         if (!users.isEmpty()) {
-            throw new RecordAlreadyExistsException("This email already exists");
+            throw new RecordAlreadyExistsException(ErrorMessages.EMAIL_ALREADY_EXISTS);
         }
         String hash = this.encode(requestUser.getPassword());
         User user = this.userRepo.save(new User(requestUser.getName(), requestUser.getEmail(), requestUser.getGender(), hash));
-        return new UserDataResponseDto(user.getId(), user.name, user.email, user.gender);
+        return new UserIdDto(user.getId());
     }
 
     @Override
     public UserDataResponseDto getUser(Long id) {
         Optional<User> optionalUser = this.userRepo.findById(id);
-        if (!optionalUser.isPresent() || optionalUser.get().getDeleted()) throw new RecordNotExistsException("User does not exists");
+        if (!optionalUser.isPresent() || optionalUser.get().getDeleted())
+            throw new RecordNotExistsException(ErrorMessages.USER_NOT_EXISTS);
         User user = optionalUser.get();
-        return new UserDataResponseDto(user.getId(), user.name, user.email, user.gender);
+        return new UserDataResponseDto(user.getId(), user.getName(), user.getEmail(), user.getGender());
     }
 
     @Override
     public UserDataResponseDto getUserByEmail(String email) {
         List<User> users = this.userRepo.findByEmail(email);
-        if (users.isEmpty()) throw new RecordNotExistsException("User does not exists");
+        if (users.isEmpty()) throw new RecordNotExistsException(ErrorMessages.USER_NOT_EXISTS);
         User user = users.stream().findFirst().get();
-        if(user.getDeleted()) throw new RecordNotExistsException("User does not exists");
-        return new UserDataResponseDto(user.getId(), user.name, user.email, user.gender);
+        if (user.getDeleted()) throw new RecordNotExistsException(ErrorMessages.USER_NOT_EXISTS);
+        return new UserDataResponseDto(user.getId(), user.getName(), user.getEmail(), user.getGender());
     }
 
     @Override
