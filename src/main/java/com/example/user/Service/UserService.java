@@ -1,5 +1,7 @@
 package com.example.user.Service;
 
+import com.example.user.Entity.User;
+import com.example.user.dto.LoginResponseDto;
 import com.example.user.dto.UserDataDto;
 import com.example.user.dto.UserDataResponseDto;
 import com.example.user.dto.UserIdDto;
@@ -10,6 +12,7 @@ public interface UserService {
     UserDataResponseDto getUser(Long id);
 
     UserDataResponseDto getUserByEmail(String email);
+    LoginResponseDto login(UserDataDto userDataDto);
 
     UserDataDto updateUser(Long id, UserDataDto requestUser);
 
@@ -17,5 +20,5 @@ public interface UserService {
 
     String encode(String password);
 
-    Boolean authenticate(String password, String hash);
+    User authenticate(String email, String password);
 }

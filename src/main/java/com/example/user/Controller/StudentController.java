@@ -2,9 +2,11 @@ package com.example.user.Controller;
 
 import com.example.user.Constants.ApiConstants;
 import com.example.user.Exception.ControllerException;
+import com.example.user.Exception.InvalidCredentialsException;
 import com.example.user.Exception.RecordAlreadyExistsException;
 import com.example.user.Exception.RecordNotExistsException;
 import com.example.user.Service.UserService;
+import com.example.user.dto.LoginResponseDto;
 import com.example.user.dto.UserDataDto;
 import com.example.user.dto.UserIdDto;
 import lombok.NonNull;
@@ -35,11 +37,22 @@ public class StudentController {
     @PostMapping(ApiConstants.separator + "authenticate")
     public ResponseEntity<?> authenticate(@NonNull @RequestBody final UserDataDto requestUser) {
         try {
-            return new ResponseEntity<>(this.userService.createUser(requestUser), HttpStatus.CREATED);
-        } catch (RecordAlreadyExistsException exception) {
+            return new ResponseEntity<>(this.userService.authenticate(requestUser.getEmail(),requestUser.getPassword()), HttpStatus.CREATED);
+        } catch (InvalidCredentialsException exception) {
             ControllerException ce = new ControllerException(exception.getMessage(), exception.getStatus());
             return new ResponseEntity<>(ce, ce.getStatus());
         }
+    }
+
+    @PostMapping(ApiConstants.separator + "login")
+    public ResponseEntity<?> login(@NonNull @RequestBody final UserDataDto requestUser) {
+        try{
+            return new ResponseEntity<>(this.userService.login(requestUser), HttpStatus.CREATED);
+        } catch (InvalidCredentialsException exception) {
+            ControllerException ce = new ControllerException(exception.getMessage(), exception.getStatus());
+            return new ResponseEntity<>(ce, ce.getStatus());
+        }
+
     }
 
     @PutMapping(ApiConstants.separator + "{id}")

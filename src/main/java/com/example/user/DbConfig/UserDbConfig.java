@@ -1,4 +1,4 @@
-package com.example.user.dbConfig;
+package com.example.user.DbConfig;
 
 import javax.sql.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;

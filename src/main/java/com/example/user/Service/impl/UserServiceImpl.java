@@ -1,14 +1,20 @@
 package com.example.user.Service.impl;
 
+import com.example.user.AuthConfig.TokenHelper;
 import com.example.user.Constants.ErrorMessages;
 import com.example.user.Entity.User;
+import com.example.user.Exception.InvalidCredentialsException;
 import com.example.user.Exception.RecordAlreadyExistsException;
 import com.example.user.Exception.RecordNotExistsException;
 import com.example.user.Repository.UserRepository;
 import com.example.user.Service.UserService;
+import com.example.user.dto.LoginResponseDto;
 import com.example.user.dto.UserDataDto;
 import com.example.user.dto.UserDataResponseDto;
 import com.example.user.dto.UserIdDto;
+import io.netty.util.internal.ObjectUtil;
+import java.math.BigInteger;
+import java.util.Objects;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private TokenHelper tokenHelper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -55,7 +63,24 @@ public class UserServiceImpl implements UserService {
         if (user.getDeleted()) throw new RecordNotExistsException(ErrorMessages.USER_NOT_EXISTS);
         return new UserDataResponseDto(user.getId(), user.getName(), user.getEmail(), user.getGender());
     }
-
+    @Override
+    public LoginResponseDto login(UserDataDto userDataDto){
+        final User user = authenticate(userDataDto.getEmail(),userDataDto.getPassword());
+        if(Objects.nonNull(user)){
+            final String token = tokenHelper.generateJwtToken(user);
+            return new LoginResponseDto(user.getId(),token);
+        }
+        throw new InvalidCredentialsException("Invalid email/password");
+    }
+    @Override
+    public User authenticate(String email, String password){
+        final List<User> users = this.userRepo.findByEmail(email);
+        if (users.isEmpty()) {
+            throw new InvalidCredentialsException(ErrorMessages.USER_NOT_EXISTS);
+        }
+        final User user = users.get(BigInteger.ZERO.intValue());
+        return validatePassword(password, user.getPassword()) ? user : null;
+    }
     @Override
     public UserDataDto updateUser(Long id, UserDataDto requestUser) {
         String hash = this.encode(requestUser.getPassword());
@@ -75,8 +100,8 @@ public class UserServiceImpl implements UserService {
         return this.passwordEncoder.encode(password);
     }
 
-    @Override
-    public Boolean authenticate(String password, String hash) {
+
+    private Boolean validatePassword(String password, String hash) {
         return this.passwordEncoder.matches(password, hash);
     }
 }
